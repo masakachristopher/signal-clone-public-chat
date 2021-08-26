@@ -1,19 +1,29 @@
 import { NavigationHelpersContext } from '@react-navigation/native';
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Image, KeyboardAvoidingView, StatusBar, StyleSheet, Text, View, TextInput, TouchableOpacity, Dimensions } from 'react-native'
 import { Button } from 'react-native-elements/dist/buttons/Button';
 import { Input } from 'react-native-elements/dist/input/Input'
-// import { Dimensions } from 'react-native';
+import { auth } from '../firebase';
 
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+// const windowHeight = Dimensions.get('window').height;
 const LoginScreen = ({navigation}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     
 
-    const signIn = ()=>{
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((authUser) => {
+            console.log(authUser);
+            if (authUser) {
+                navigation.replace("Home");
+            }
+        });
+        return unsubscribe;
+    },[])
 
+    const signIn = ()=>{
+        auth.signInWithEmailAndPassword(email,password).catch(error => alert(error))
     }
     return (
         <View style={styles.container}>
@@ -38,19 +48,16 @@ const LoginScreen = ({navigation}) => {
                 type="password"
                 value={password}
                 onChangeText={(text) => setPassword(text)}
+                onSubmitEditing={signIn}
             />
                 
             <Button containerStyle={styles.buttonLogin}  onPress={signIn} title="Login" />
-            <Button containerStyle={styles.button} type="outline" title="Register"/>
-
-            <TouchableOpacity style={styles.registerTxt} onPress={()=> navigation.navigate('Register')} >
-                <Text>Register</Text>
-            </TouchableOpacity>
+            <Button onPress={()=> navigation.navigate('Register')} containerStyle={styles.button} type="outline" title="Register"/>
         </View>
     )
 }
 
-export default LoginScreen
+export default LoginScreen;
 
 const styles = StyleSheet.create({
     container:{
@@ -61,13 +68,13 @@ const styles = StyleSheet.create({
         padding: 10
     },
     button:{
-        width: windowWidth - 10,
+        width: windowWidth - 30,
         marginTop:10,
         color: '#000'
 
     },
     buttonLogin:{
-        width:windowWidth - 10,
+        width:windowWidth - 30,
         marginTop:10,
         backgroundColor: "blue"
     },
