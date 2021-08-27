@@ -9,7 +9,7 @@ const AddChatScreen = ({navigation}) => {
     const [input, setInput] = useState("")
     useLayoutEffect(() => {
         navigation.setOptions({
-            title: "Add a New Chat",
+            title: "Add a New Group Chat",
             headerBackTitle: "Chats"
         })
       
@@ -37,7 +37,7 @@ const AddChatScreen = ({navigation}) => {
                 }
                 onSubmitEditing={createChat}
             />
-            <Button containerStyle={{backgroundColor:"blue"}} onPress={createChat}  title="Create New Chat" />
+            <Button containerStyle={{backgroundColor:"blue"}} onPress={createChat}  title="Create New Group Chat" />
         </View>
     )
 }

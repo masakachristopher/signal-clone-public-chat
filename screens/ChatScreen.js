@@ -106,7 +106,10 @@ const ChatScreen = ({navigation, route}) => {
                             bottom = {-15}
                             right ={-5}
                             source={{
-                                uri: data.photoURL
+                                // messages[0]?.data.photoURL ||
+                                uri: 
+                                messages[0]?.data.photoURL || 
+                                data.photoURL
                             }}
                             />
                             <Text style={styles.recieverText}>{data.message}</Text>
@@ -116,10 +119,14 @@ const ChatScreen = ({navigation, route}) => {
                              <Avatar
                             position="absolute"
                             rounded
+                            source={{
+                                uri: data.photoURL
+                            }}
                             containerStyle={{
                                 bottom: -15,
                                 left:-5,
                                 position: "absolute"
+                                
                             }}
                             bottom = {-15}
                             left ={-5}
